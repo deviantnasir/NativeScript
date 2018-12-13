@@ -43,14 +43,14 @@ allTests["PLATFORM"] = platformTests;
 import * as fsTests from "./file-system/file-system-tests";
 allTests["FILE-SYSTEM"] = fsTests;
 
-// import * as httpTests from "./http/http-tests";
-// allTests["HTTP"] = httpTests;
+import * as httpTests from "./http/http-tests";
+allTests["HTTP"] = httpTests;
 
-// import * as xhrTests from "./xhr/xhr-tests";
-// allTests["XHR"] = xhrTests;
+import * as xhrTests from "./xhr/xhr-tests";
+allTests["XHR"] = xhrTests;
 
-// import * as fetchTests from "./fetch/fetch-tests";
-// allTests["FETCH"] = fetchTests;
+import * as fetchTests from "./fetch/fetch-tests";
+allTests["FETCH"] = fetchTests;
 
 import * as appSettingsTests from "./application-settings/application-settings-tests";
 allTests["APPLICATION-SETTINGS"] = appSettingsTests;
@@ -153,9 +153,6 @@ allTests["STYLE-PROPERTIES"] = stylePropertiesTests;
 import * as frameTests from "./ui/frame/frame-tests";
 allTests["FRAME"] = frameTests;
 
-import * as tabViewRootTests from "./ui/tab-view/tab-view-root-tests";
-allTests["TAB-VIEW-ROOT"] = tabViewRootTests;
-
 import * as viewTests from "./ui/view/view-tests";
 allTests["VIEW"] = viewTests;
 
@@ -255,14 +252,17 @@ allTests["SEARCH-BAR"] = searchBarTests;
 import * as navigationTests from "./navigation/navigation-tests";
 allTests["NAVIGATION"] = navigationTests;
 
+import * as livesyncTests from "./livesync/livesync-tests";
+allTests["LIVESYNC"] = livesyncTests;
+
+import * as tabViewRootTests from "./ui/tab-view/tab-view-root-tests";
+allTests["TAB-VIEW-ROOT"] = tabViewRootTests;
+
 import * as resetRootViewTests from "./ui/root-view/reset-root-view-tests";
 allTests["RESET-ROOT-VIEW"] = resetRootViewTests;
 
 import * as rootViewTests from "./ui/root-view/root-view-tests";
 allTests["ROOT-VIEW"] = rootViewTests;
-
-import * as livesyncTests from "./livesync/livesync-tests";
-allTests["LIVESYNC"] = livesyncTests;
 
 const testsSuitesWithLongDelay = {
     HTTP: 15 * 1000,

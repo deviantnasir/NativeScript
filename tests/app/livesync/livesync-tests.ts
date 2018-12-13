@@ -5,6 +5,7 @@ import * as TKUnit from "../TKUnit";
 import { Button } from "tns-core-modules/ui/button/button";
 import { Color } from "tns-core-modules/color";
 import { Page } from "tns-core-modules/ui/page";
+import { Label } from "tns-core-modules/ui/label/label";
 import { StackLayout } from "tns-core-modules/ui/layouts/stack-layout";
 
 const appCssFileName = "./app/application.css";
@@ -18,22 +19,15 @@ const mainPageXmlFileName = "./app/main-page.xml";
 
 const green = new Color("green");
 
-// const entry: frame.NavigationEntry = { moduleName: "app/mainPage", clearHistory: false };
-
-function createTestFrameRootEntry() {
+const mainPageFactory = function (): Page {
     const page = new Page();
-    const frameRoot = new frame.Frame();
-    frameRoot.navigate("app/mainPage");
-
-    const entry: frame.NavigationEntry = {
-        create: () => frameRoot
-    };
-
-    return {
-        entry: entry,
-        root: frameRoot,
-        page: page
-    };
+    const stack = new StackLayout();
+    const label = new Label();
+    label.id = "label";
+    label.text = "label";
+    stack.addChild(label);
+    page.content = stack;
+    return page;
 }
 
 const pageFactory = function (): Page {
@@ -51,13 +45,13 @@ export function test_onLiveSync_HmrContext_AppStyle_AppNewCss() {
     _test_onLiveSync_HmrContext_AppStyle(appNewCssFileName);
 }
 
-// export function test_onLiveSync_HmrContext_AppStyle_AppNewScss() {
-//     _test_onLiveSync_HmrContext_AppStyle(appNewScssFileName);
-// }
-
-export function test_onLiveSync_HmrContext_ContextUndefined() {
-    _test_onLiveSync_HmrContext({ type: undefined, module: undefined });
+export function test_onLiveSync_HmrContext_AppStyle_AppNewScss() {
+    _test_onLiveSync_HmrContext_AppStyle(appNewScssFileName);
 }
+
+// export function test_onLiveSync_HmrContext_ContextUndefined() {
+//     _test_onLiveSync_HmrContext({ type: undefined, module: undefined });
+// }
 
 // export function test_onLiveSync_HmrContext_ModuleUndefined() {
 //     _test_onLiveSync_HmrContext({ type: "script", module: undefined });
@@ -85,9 +79,7 @@ export function test_onLiveSync_HmrContext_ContextUndefined() {
 
 export function setUpModule() {
     debugger;
-    const resetFrameRoot = createTestFrameRootEntry();
-    app._resetRootView(resetFrameRoot.entry);
-    TKUnit.waitUntilReady(() => resetFrameRoot.page.isLoaded);
+    helper.navigate(mainPageFactory);
 }
 
 export function tearDown() {
@@ -98,6 +90,7 @@ export function tearDown() {
 function _test_onLiveSync_HmrContext_AppStyle(styleFileName: string) {
     debugger;
     const pageBeforeNavigation = helper.getCurrentPage();
+
     helper.navigateWithHistory(pageFactory);
     app.setCssFileName(styleFileName);
 
@@ -105,7 +98,7 @@ function _test_onLiveSync_HmrContext_AppStyle(styleFileName: string) {
     global.__onLiveSync({ type: "style", module: styleFileName });
 
     const pageAfterLiveSync = helper.getCurrentPage();
-    TKUnit.waitUntilReady(() => pageAfterLiveSync.getViewById("button").style.color === green, 3, false);
+    TKUnit.waitUntilReady(() => pageAfterLiveSync.getViewById("button").style.color.toString() === green.toString());
 
     TKUnit.assertTrue(pageAfterLiveSync.frame.canGoBack(), "App styles NOT applied - livesync navigation executed!");
     TKUnit.assertEqual(pageAfterLiveSync, pageBeforeLiveSync, "Pages are different - livesync navigation executed!");
@@ -125,7 +118,8 @@ function _test_onLiveSync_HmrContext(context: { type, module }) {
     global.__onLiveSync({ type: context.type, module: context.module });
 
     TKUnit.waitUntilReady(() => !!frame.topmost());
-    // const topmostFrame = frame.topmost();
-    // TKUnit.waitUntilReady(() => !!topmostFrame.currentPage);
-    // TKUnit.waitUntilReady(() => topmostFrame.currentPage && topmostFrame.currentPage.isLoaded && !topmostFrame.canGoBack());
+    const topmostFrame = frame.topmost();
+    TKUnit.waitUntilReady(() => !!topmostFrame.currentPage);
+    TKUnit.waitUntilReady(() => topmostFrame.currentPage && topmostFrame.currentPage.isLoaded && !topmostFrame.canGoBack());
+    TKUnit.assertTrue(topmostFrame.currentPage.getViewById("label").isLoaded);
 }

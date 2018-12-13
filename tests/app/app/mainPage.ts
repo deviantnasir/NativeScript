@@ -18,7 +18,7 @@ trace.addCategories(trace.categories.Test + "," + trace.categories.Error);
 // ));
 
 function runTests() {
-    setTimeout(() => tests.runAll(""), 10);
+    setTimeout(() => tests.runAll("LIVESYNC"), 10);
 }
 
 export function onNavigatedTo(args) {
