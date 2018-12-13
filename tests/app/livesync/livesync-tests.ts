@@ -10,8 +10,15 @@ import { StackLayout } from "tns-core-modules/ui/layouts/stack-layout";
 const appCssFileName = "./app/application.css";
 const appNewCssFileName = "./app/app-new.css";
 const appNewScssFileName = "./app/app-new.scss";
+const appJsFileName = "./app/app.js";
+const appTsFileName = "./app/app.ts";
+const mainPageCssFileName = "./app/main-page.css";
+const mainPageHtmlFileName = "./app/main-page.html";
+const mainPageXmlFileName = "./app/main-page.xml";
 
 const green = new Color("green");
+
+// const entry: frame.NavigationEntry = { moduleName: "app/mainPage", clearHistory: false };
 
 function createTestFrameRootEntry() {
     const page = new Page();
@@ -44,21 +51,52 @@ export function test_onLiveSync_HmrContext_AppStyle_AppNewCss() {
     _test_onLiveSync_HmrContext_AppStyle(appNewCssFileName);
 }
 
-export function test_onLiveSync_HmrContext_AppStyle_AppNewScss() {
-    _test_onLiveSync_HmrContext_AppStyle(appNewScssFileName);
+// export function test_onLiveSync_HmrContext_AppStyle_AppNewScss() {
+//     _test_onLiveSync_HmrContext_AppStyle(appNewScssFileName);
+// }
+
+export function test_onLiveSync_HmrContext_ContextUndefined() {
+    _test_onLiveSync_HmrContext({ type: undefined, module: undefined });
 }
 
+// export function test_onLiveSync_HmrContext_ModuleUndefined() {
+//     _test_onLiveSync_HmrContext({ type: "script", module: undefined });
+// }
+
+// export function test_onLiveSync_HmrContext_Script_AppJs() {
+//     _test_onLiveSync_HmrContext({ type: "script", module: appJsFileName });
+// }
+
+// export function test_onLiveSync_HmrContext_Script_AppTs() {
+//     _test_onLiveSync_HmrContext({ type: "script", module: appTsFileName });
+// }
+
+// export function test_onLiveSync_HmrContext_Style_MainPageCss() {
+//     _test_onLiveSync_HmrContext({ type: "style", module: mainPageCssFileName });
+// }
+
+// export function test_onLiveSync_HmrContext_Markup_MainPageHtml() {
+//     _test_onLiveSync_HmrContext({ type: "markup", module: mainPageHtmlFileName });
+// }
+
+// export function test_onLiveSync_HmrContext_Markup_MainPageXml() {
+//     _test_onLiveSync_HmrContext({ type: "markup", module: mainPageXmlFileName });
+// }
+
 export function setUpModule() {
+    debugger;
     const resetFrameRoot = createTestFrameRootEntry();
     app._resetRootView(resetFrameRoot.entry);
     TKUnit.waitUntilReady(() => resetFrameRoot.page.isLoaded);
 }
 
 export function tearDown() {
+    debugger;
     app.setCssFileName(appCssFileName);
 }
 
 function _test_onLiveSync_HmrContext_AppStyle(styleFileName: string) {
+    debugger;
     const pageBeforeNavigation = helper.getCurrentPage();
     helper.navigateWithHistory(pageFactory);
     app.setCssFileName(styleFileName);
@@ -81,3 +119,13 @@ function _test_onLiveSync_HmrContext_AppStyle(styleFileName: string) {
     TKUnit.assertTrue(pageAfterNavigationBack._cssState.isSelectorsLatestVersionApplied(), "Latest selectors version is NOT applied!");
 }
 
+function _test_onLiveSync_HmrContext(context: { type, module }) {
+    debugger;
+    helper.navigateWithHistory(pageFactory);
+    global.__onLiveSync({ type: context.type, module: context.module });
+
+    TKUnit.waitUntilReady(() => !!frame.topmost());
+    // const topmostFrame = frame.topmost();
+    // TKUnit.waitUntilReady(() => !!topmostFrame.currentPage);
+    // TKUnit.waitUntilReady(() => topmostFrame.currentPage && topmostFrame.currentPage.isLoaded && !topmostFrame.canGoBack());
+}
