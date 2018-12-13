@@ -261,6 +261,9 @@ allTests["RESET-ROOT-VIEW"] = resetRootViewTests;
 import * as rootViewTests from "./ui/root-view/root-view-tests";
 allTests["ROOT-VIEW"] = rootViewTests;
 
+import * as livesyncTests from "./livesync/livesync-tests";
+allTests["LIVESYNC"] = livesyncTests;
+
 const testsSuitesWithLongDelay = {
     HTTP: 15 * 1000,
 }
